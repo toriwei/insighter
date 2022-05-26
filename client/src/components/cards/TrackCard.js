@@ -1,13 +1,13 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import { usePalette } from "react-palette";
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
+import { usePalette } from 'react-palette'
 
-var tinycolor = require("tinycolor2");
+var tinycolor = require('tinycolor2')
 
 const useStyles = makeStyles({
   root: {
@@ -19,10 +19,10 @@ const useStyles = makeStyles({
   media: {
     height: 110,
     width: 110,
-    margin: "auto",
+    margin: 'auto',
   },
   cardContent: {
-    margin: "auto",
+    margin: 'auto',
     paddingTop: 0,
     paddingBottom: 0,
   },
@@ -30,18 +30,23 @@ const useStyles = makeStyles({
     paddingTop: 8,
     paddingBottom: 8,
   },
-});
+})
 
 export default function MediaCard({ track, index }) {
-  const classes = useStyles();
-  const { data } = usePalette(track.album.images[0].url);
-  let cardColor = tinycolor(data.lightMuted);
-  let textColor;
-  cardColor.isLight() ? textColor = "black" : textColor = "white"
+  const classes = useStyles()
+  const { data } = usePalette(track.album.images[0].url)
+  let cardColor = tinycolor(data.lightMuted)
+  let textColor
+  cardColor.isLight() ? (textColor = 'black') : (textColor = 'white')
   return (
     <Card className={classes.root} style={{ backgroundColor: data.lightMuted }}>
       <CardContent className={classes.cardContent} style={{ color: textColor }}>
-        <Grid className={classes.smallGrid} container direction="row" justifycontent="flex-start">
+        <Grid
+          className={classes.smallGrid}
+          container
+          direction="row"
+          justifycontent="flex-start"
+        >
           <Grid item xs={9}>
             <Typography noWrap className={classes.header} variant="body2">
               {track.name}
@@ -60,15 +65,16 @@ export default function MediaCard({ track, index }) {
         title={track.name}
       />
       <CardContent className={classes.cardContent} style={{ color: textColor }}>
-        <Typography className={classes.type} variant="body2" align="left" component="div" >
-          <p>
-            {track.artists[0].name}
-          </p>
-          <p>
-            popularity: {track.popularity}
-          </p>
+        <Typography
+          className={classes.type}
+          variant="body2"
+          align="left"
+          component="div"
+        >
+          <p>{track.artists[0].name}</p>
+          <p>popularity: {track.popularity}</p>
         </Typography>
       </CardContent>
     </Card>
-  );
+  )
 }
