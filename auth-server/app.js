@@ -15,7 +15,15 @@ var cookieParser = require('cookie-parser')
 require('dotenv').config()
 var client_id = process.env.CLIENT_ID // Your client id
 var client_secret = process.env.CLIENT_SECRET // Your secret
-var redirect_uri = process.env.REDIRECT_URI // Your redirect uri
+const frontend_uri =
+  process.env.NODE_ENV !== 'production'
+    ? 'http://localhost:3000'
+    : process.env.FRONTEND_URI
+const redirect_uri =
+  process.env.NODE_ENV !== 'production'
+    ? 'http://localhost:8888/callback'
+    : process.env.REDIRECT_URI
+const port = process.env.PORT || 8888
 
 /**
  * Generates a random string containing numbers and letters
@@ -70,7 +78,8 @@ app.get('/callback', function (req, res) {
 
   if (state === null || state !== storedState) {
     res.redirect(
-      '/#' +
+      frontend_uri +
+        '/#' +
         querystring.stringify({
           error: 'state_mismatch',
         })
@@ -110,7 +119,8 @@ app.get('/callback', function (req, res) {
 
         // we can also pass the token to the browser to make requests from there
         res.redirect(
-          'http://localhost:3000/#' +
+          frontend_uri +
+            '/#' +
             querystring.stringify({
               access_token: access_token,
               refresh_token: refresh_token,
@@ -118,7 +128,8 @@ app.get('/callback', function (req, res) {
         )
       } else {
         res.redirect(
-          '/#' +
+          frontend_uri +
+            '/#' +
             querystring.stringify({
               error: 'invalid_token',
             })
@@ -157,3 +168,7 @@ app.get('/refresh_token', function (req, res) {
 
 console.log('Listening on 8888')
 app.listen(8888)
+app.listen(port, (err) => {
+  if (err) return console.log(err)
+  console.log('server running on port: ', port)
+})
